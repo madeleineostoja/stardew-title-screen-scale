@@ -1,0 +1,11 @@
+{
+  "Name": "Title Screen Scale",
+  "Author": "Mads",
+  "Version": "%ProjectVersion%",
+  "License": "MIT",
+  "Description": "Automatically scales pre-game menus to fit the render viewport.",
+  "UniqueID": "heyitsmads.TitleScreenScale",
+  "EntryDll": "TitleScreenScale.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": []
+}
