@@ -26,3 +26,50 @@ internal static class OptionsPatches
         __result = Math.Min(1f, Math.Min(widthScale, heightScale));
     }
 }
+
+[HarmonyPatch(typeof(Options), nameof(Options.zoomLevel), MethodType.Getter)]
+internal static class OptionsZoomPatches
+{
+    [HarmonyPostfix]
+    private static void ZoomLevelPostfix(Options __instance, ref float __result)
+    {
+        // Title-screen overlays use world coordinates even though Stardew draws the menu in UI coordinates.
+        if (Game1.gameMode != 3)
+            __result = __instance.uiScale;
+    }
+}
+
+// Switching coordinate systems must also rebuild render targets when the saved scales happen to match.
+[HarmonyPatch(typeof(Game1), nameof(Game1.gameMode), MethodType.Setter)]
+internal static class GameModePropertyPatches
+{
+    [HarmonyPrefix]
+    private static void GameModePrefix(byte value, out bool __state)
+    {
+        __state = value != 11 && Game1.gameMode != 11 && (Game1.gameMode == 3) != (value == 3);
+    }
+
+    [HarmonyPostfix]
+    private static void GameModePostfix(bool __state)
+    {
+        if (__state)
+            Game1.game1.refreshWindowSettings();
+    }
+}
+
+[HarmonyPatch(typeof(Game1), nameof(Game1.setGameMode))]
+internal static class SetGameModePatches
+{
+    [HarmonyPrefix]
+    private static void SetGameModePrefix(byte mode, out bool __state)
+    {
+        __state = mode != 11 && Game1.gameMode != 11 && (Game1.gameMode == 3) != (mode == 3);
+    }
+
+    [HarmonyPostfix]
+    private static void SetGameModePostfix(bool __state)
+    {
+        if (__state)
+            Game1.game1.refreshWindowSettings();
+    }
+}
