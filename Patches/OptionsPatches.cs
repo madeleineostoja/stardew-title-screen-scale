@@ -11,14 +11,18 @@ internal static class OptionsPatches
     private const float MinimumCanvasHeight = 744f;
 
     [HarmonyPostfix]
-    private static void DesiredUIScalePostfix(ref float __result)
+    private static void DesiredUIScalePostfix(Options __instance, ref float __result)
     {
         if (Game1.gameMode == 3)
             return;
 
-        var viewport = Game1.graphics.GraphicsDevice.Viewport;
-        var widthScale = viewport.Width / MinimumCanvasWidth;
-        var heightScale = viewport.Height / MinimumCanvasHeight;
+        var viewport = Game1.uiViewport;
+        if (viewport.Width <= 0 || viewport.Height <= 0)
+            return;
+
+        // Include the current base scale so this composes with platform-level UI scaling.
+        var widthScale = __instance.baseUIScale * viewport.Width / MinimumCanvasWidth;
+        var heightScale = __instance.baseUIScale * viewport.Height / MinimumCanvasHeight;
         __result = Math.Min(1f, Math.Min(widthScale, heightScale));
     }
 }

@@ -17,7 +17,7 @@ The mod has no configuration. To remove it, delete its folder from `Mods`; it do
 
 ## Behaviour
 
-Before gameplay, the mod compares the current render viewport with a 1300×744 safe-area canvas and uses the smaller width or height ratio, capped at 100%. The safe area includes controls that the Load menu places beyond Stardew Valley's nominal 1280×720 UI canvas. This covers the title screen, Load, New Game, Co-op, character creation, and related title submenus without detecting specific devices or menus.
+Before gameplay, the mod compares Stardew Valley's logical UI viewport with a 1300×744 safe-area canvas and uses the smaller width or height ratio, capped at 100%. Using the logical viewport lets the mod compose with any display scaling already applied by the game or platform, keeping controller cursor coordinates aligned with the interface. The safe area includes controls that the Load menu places beyond Stardew Valley's nominal 1280×720 UI canvas. This covers the title screen, Load, New Game, Co-op, character creation, and related title submenus without detecting specific devices or menus.
 
 Once gameplay starts, Stardew Valley's normal UI scale is left untouched.
 
